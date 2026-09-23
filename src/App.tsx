@@ -994,7 +994,9 @@ function App() {
             min-height: 100%;
             margin: 0 auto;
             padding-top: max(28px, env(safe-area-inset-top));
+            padding-right: 18px;
             padding-bottom: max(48px, env(safe-area-inset-bottom));
+            padding-left: 18px;
           }
         }
       `}</style>
