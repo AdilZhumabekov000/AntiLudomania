@@ -145,7 +145,9 @@ function CameraRig({
   stage: Stage
   globalFactIndex: number
 }) {
-  const { camera, pointer } = useThree()
+  const { camera, pointer, size } = useThree()
+
+  const isMobile = size.width <= 768
 
   const targetLook = useRef(
     new THREE.Vector3(0, 0.8, 0)
@@ -177,12 +179,21 @@ function CameraRig({
     const isGame = stage === 'game'
 
     const targetX = isGame
-      ? pointer.x * 0.3
+      ? isMobile
+        ? 0
+        : pointer.x * 0.3
       : baseX + pointer.x * 0.05
 
     const targetY = isGame
-      ? 3.5 + pointer.y * 0.15
+      ? isMobile
+        ? 3.5
+        : 3.5 + pointer.y * 0.15
       : 3.4 + pointer.y * 0.04
+
+    const targetZ =
+      isGame && isMobile
+        ? 13.0
+        : 7.5
 
     camera.position.x = THREE.MathUtils.lerp(
       camera.position.x,
@@ -198,9 +209,24 @@ function CameraRig({
 
     camera.position.z = THREE.MathUtils.lerp(
       camera.position.z,
-      7.5,
+      targetZ,
       0.025
     )
+
+    if (camera instanceof THREE.PerspectiveCamera) {
+      const targetFov =
+        isGame && isMobile
+          ? 70
+          : 42
+
+      camera.fov = THREE.MathUtils.lerp(
+        camera.fov,
+        targetFov,
+        0.08
+      )
+
+      camera.updateProjectionMatrix()
+    }
 
     targetLook.current.x = THREE.MathUtils.lerp(
       targetLook.current.x,
@@ -508,6 +534,9 @@ function Scene({
   winningRound,
   onSelect,
 }: SceneProps) {
+  const { size } = useThree()
+  const isMobile = size.width <= 768
+
   const spacing =
     cupCount === 5
       ? 1.45
@@ -919,6 +948,14 @@ function App() {
 
   return (
     <div className="app">
+
+      <style>{`
+        @media (max-width: 768px) {
+          .result-card {
+            transform: translateY(-32px);
+          }
+        }
+      `}</style>
 
       <Canvas
         shadows

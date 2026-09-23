@@ -1,0 +1,785 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+}
+
+html {
+  background: #111314;
+}
+
+body {
+  min-height: 100dvh;
+  overflow: hidden;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  color: #f4f4f2;
+  background: #111314;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app,
+.start-screen {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #111314;
+}
+
+.app > canvas {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: manipulation;
+}
+
+.start-screen {
+  display: grid;
+  place-items: center;
+  padding: max(24px, env(safe-area-inset-top)) 24px
+    max(24px, env(safe-area-inset-bottom));
+  background:
+    radial-gradient(circle at 50% 36%, rgba(214, 166, 47, 0.12), transparent 32%),
+    linear-gradient(180deg, #191b1c 0%, #111314 100%);
+}
+
+.start-content {
+  width: min(100%, 720px);
+  text-align: center;
+}
+
+.eyebrow,
+.round-label,
+.think-label,
+.entered-label,
+.frequency-title {
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b8b9b6;
+}
+
+.start-prize {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 18px 0 26px;
+  padding: 14px 18px;
+  border: 1px solid rgba(214, 166, 47, 0.32);
+  border-radius: 18px;
+  background: rgba(214, 166, 47, 0.06);
+}
+
+.start-prize span {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: #c8c8c3;
+}
+
+.start-prize strong {
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1;
+  color: #e1b64a;
+}
+
+.start-content h1,
+.calculator-card h2,
+.decision-card h2,
+.help-page h2,
+.final-card h2,
+.kazakhstan-heading,
+.result-card h2 {
+  margin: 0;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+.start-content h1 {
+  font-size: clamp(46px, 8vw, 84px);
+  line-height: 0.98;
+}
+
+.start-content p {
+  margin: 24px auto 30px;
+  font-size: clamp(18px, 2.4vw, 24px);
+  line-height: 1.55;
+  color: #c9c9c5;
+}
+
+.primary-button,
+.secondary-button,
+.choice-button,
+.text-button,
+.period {
+  border: 0;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease,
+    opacity 160ms ease;
+}
+
+.primary-button {
+  min-height: 52px;
+  padding: 14px 22px;
+  border-radius: 14px;
+  font-weight: 750;
+  color: #151617;
+  background: #f1f0eb;
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.choice-button:hover,
+.period:hover {
+  transform: translateY(-1px);
+}
+
+.primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+  transform: none;
+}
+
+.secondary-button {
+  min-height: 52px;
+  padding: 14px 20px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px;
+  color: #f4f4f2;
+  background: rgba(255,255,255,0.05);
+}
+
+.text-button {
+  padding: 12px 8px;
+  color: #bfc0bc;
+  background: transparent;
+}
+
+.full-button {
+  width: 100%;
+}
+
+.game-header {
+  position: fixed;
+  z-index: 5;
+  top: max(22px, env(safe-area-inset-top));
+  left: 50%;
+  width: min(92vw, 720px);
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.game-prize {
+  margin-top: 8px;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1;
+  font-weight: 800;
+  color: #e1b64a;
+}
+
+.think-label {
+  margin-top: 18px;
+}
+
+.timer {
+  margin-top: 3px;
+  font-size: clamp(42px, 8vw, 64px);
+  line-height: 1;
+  font-weight: 800;
+}
+
+.choose-title {
+  margin-top: 18px;
+  font-size: clamp(18px, 2.6vw, 26px);
+  font-weight: 700;
+}
+
+.screen-overlay,
+.result-wrapper {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100dvh;
+  padding:
+    max(20px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    max(20px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: rgba(15, 17, 18, 0.34);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.panel-scroll {
+  align-items: flex-start;
+}
+
+.full-fact-card,
+.calculator-card,
+.decision-card,
+.final-card,
+.result-card,
+.kazakhstan-page,
+.help-page {
+  position: relative;
+  width: min(100%, 760px);
+  margin: auto;
+}
+
+.full-fact-card,
+.calculator-card,
+.decision-card,
+.final-card,
+.result-card {
+  padding: clamp(24px, 5vw, 52px);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 28px;
+  background: rgba(31, 33, 34, 0.92);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+}
+
+.full-fact-card {
+  text-align: center;
+}
+
+.global-counter {
+  margin-top: 18px;
+  font-size: 13px;
+  color: #989995;
+}
+
+.global-number {
+  margin-top: 28px;
+  font-size: clamp(56px, 10vw, 108px);
+  line-height: 0.95;
+  font-weight: 850;
+  letter-spacing: -0.055em;
+  color: #e1b64a;
+}
+
+.global-title {
+  margin-top: 10px;
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 750;
+}
+
+.global-text {
+  max-width: 620px;
+  margin: 24px auto 0;
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.62;
+  color: #c6c7c3;
+}
+
+.global-button {
+  margin-top: 32px;
+}
+
+.kazakhstan-page,
+.help-page {
+  padding: clamp(28px, 5vw, 56px) 0;
+}
+
+.kazakhstan-heading,
+.help-page h2 {
+  max-width: 760px;
+  margin-top: 12px;
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: 1.02;
+}
+
+.kazakhstan-grid,
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.kz-card,
+.help-card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 22px;
+  background: rgba(31,33,34,0.92);
+}
+
+.kz-number {
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1;
+  font-weight: 820;
+  color: #e1b64a;
+}
+
+.kz-title,
+.help-card p {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #c7c8c4;
+}
+
+.kz-button {
+  margin-top: 28px;
+}
+
+.calculator-card h2,
+.decision-card h2,
+.final-card h2 {
+  margin-top: 12px;
+  font-size: clamp(34px, 5vw, 56px);
+  line-height: 1.04;
+}
+
+.calculator-card > .eyebrow,
+.decision-card > .eyebrow,
+.final-card > .eyebrow {
+  margin-bottom: 4px;
+}
+
+.money-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 28px;
+  padding: 0 18px;
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.045);
+}
+
+.money-input input {
+  min-width: 0;
+  width: 100%;
+  height: 58px;
+  border: 0;
+  outline: 0;
+  font-size: 20px;
+  color: #f4f4f2;
+  background: transparent;
+}
+
+.money-input input::placeholder {
+  color: #777a78;
+}
+
+.money-input span {
+  flex: 0 0 auto;
+  font-size: 20px;
+  color: #d1d2ce;
+}
+
+.frequency-title {
+  margin-top: 24px;
+}
+
+.period-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.period {
+  min-height: 48px;
+  padding: 11px 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 13px;
+  color: #d7d8d4;
+  background: rgba(255,255,255,0.04);
+}
+
+.period.active {
+  border-color: rgba(225,182,74,0.6);
+  color: #f4f4f2;
+  background: rgba(225,182,74,0.12);
+}
+
+.calculate-button {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.results-card {
+  margin: auto;
+}
+
+.entered-label {
+  margin-top: 24px;
+}
+
+.entered-amount {
+  margin-top: 4px;
+  font-size: clamp(38px, 6vw, 58px);
+  line-height: 1;
+  font-weight: 820;
+}
+
+.entered-period {
+  margin-top: 7px;
+  color: #acaeaa;
+}
+
+.expense-table {
+  margin-top: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 18px;
+}
+
+.expense-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.expense-row:last-child {
+  border-bottom: 0;
+}
+
+.expense-row span {
+  color: #bfc0bc;
+}
+
+.expense-row strong {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.important-row {
+  background: rgba(225,182,74,0.1);
+}
+
+.spending-message,
+.highlight-box,
+.final-quote {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.055);
+}
+
+.spending-range {
+  font-size: 13px;
+  font-weight: 750;
+  color: #e1b64a;
+}
+
+.spending-heading {
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 760;
+}
+
+.spending-text,
+.decision-card > p,
+.final-card > p,
+.highlight-box,
+.final-quote {
+  font-size: 16px;
+  line-height: 1.62;
+  color: #c7c8c4;
+}
+
+.decision-card > p,
+.final-card > p {
+  margin: 20px 0 0;
+}
+
+.result-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.choice-button {
+  min-height: 144px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 18px;
+  text-align: left;
+  color: #f0f0ed;
+  background: rgba(255,255,255,0.045);
+}
+
+.choice-button strong,
+.choice-button span {
+  display: block;
+}
+
+.choice-button strong {
+  font-size: 19px;
+}
+
+.choice-button span {
+  margin-top: 9px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #b9bab6;
+}
+
+.choice-primary {
+  border-color: rgba(225,182,74,0.5);
+  background: rgba(225,182,74,0.11);
+}
+
+.choice-muted {
+  opacity: 0.78;
+}
+
+.highlight-box {
+  margin-bottom: 18px;
+}
+
+.help-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.help-number {
+  font-size: 13px;
+  font-weight: 800;
+  color: #e1b64a;
+}
+
+.help-card h3 {
+  margin: 12px 0 0;
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.help-page > .primary-button {
+  margin-top: 28px;
+}
+
+.final-card {
+  text-align: left;
+}
+
+.final-quote {
+  font-size: clamp(19px, 2.8vw, 25px);
+  color: #f0f0ed;
+}
+
+.final-card > .primary-button {
+  margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+  .kazakhstan-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .choice-button {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow: hidden;
+  }
+
+  .start-screen {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .start-content h1 {
+    font-size: clamp(44px, 15vw, 66px);
+  }
+
+  .start-content p {
+    font-size: 17px;
+  }
+
+  .game-header {
+    top: max(16px, env(safe-area-inset-top));
+    width: calc(100vw - 28px);
+  }
+
+  .game-prize {
+    font-size: 30px;
+  }
+
+  .timer {
+    font-size: 48px;
+  }
+
+  .screen-overlay,
+  .result-wrapper {
+    align-items: flex-start;
+    padding-top: max(18px, env(safe-area-inset-top));
+    padding-bottom: max(18px, env(safe-area-inset-bottom));
+  }
+
+  .full-fact-card,
+  .calculator-card,
+  .decision-card,
+  .final-card,
+  .result-card {
+    width: 100%;
+    padding: 24px 18px;
+    border-radius: 22px;
+  }
+
+  .full-fact-card,
+  .calculator-card,
+  .decision-card,
+  .final-card,
+  .result-card,
+  .kazakhstan-page,
+  .help-page {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .global-number {
+    font-size: clamp(48px, 16vw, 78px);
+  }
+
+  .global-title {
+    font-size: 27px;
+  }
+
+  .global-text {
+    font-size: 16px;
+  }
+
+  .kazakhstan-page,
+  .help-page {
+    width: 100%;
+    padding: 10px 0 24px;
+  }
+
+  .kazakhstan-heading,
+  .help-page h2,
+  .calculator-card h2,
+  .decision-card h2,
+  .final-card h2 {
+    font-size: clamp(31px, 10vw, 44px);
+  }
+
+  .kz-card,
+  .help-card {
+    padding: 19px;
+    border-radius: 18px;
+  }
+
+  .period-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .period {
+    width: 100%;
+  }
+
+  .money-input {
+    margin-top: 22px;
+  }
+
+  .result-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .expense-row {
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .expense-row strong {
+    white-space: normal;
+  }
+
+  .help-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .start-prize {
+    margin-bottom: 20px;
+  }
+
+  .start-content p {
+    margin-top: 18px;
+    margin-bottom: 24px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+
+  .global-number {
+    font-size: 52px;
+  }
+
+  .entered-amount {
+    font-size: 38px;
+  }
+}
+
+@media (max-height: 700px) {
+  .screen-overlay,
+  .result-wrapper {
+    align-items: flex-start;
+  }
+
+  .game-header {
+    top: max(10px, env(safe-area-inset-top));
+  }
+
+  .game-prize {
+    font-size: 26px;
+  }
+
+  .think-label,
+  .choose-title {
+    margin-top: 10px;
+  }
+}
