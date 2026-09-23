@@ -534,8 +534,6 @@ function Scene({
   winningRound,
   onSelect,
 }: SceneProps) {
-  const { size } = useThree()
-  const isMobile = size.width <= 768
 
   const spacing =
     cupCount === 5
