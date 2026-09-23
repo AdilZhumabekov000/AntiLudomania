@@ -971,32 +971,55 @@ function App() {
 
       <style>{`
         @media (max-width: 768px) {
-          .result-card {
-            transform: translateY(-32px);
-          }
-
-          /* Казахстан: на мобильном длинный блок должен начинаться сверху,
-             а не центрироваться по вертикали внутри overlay */
-          .kazakhstan-scroll {
+          /* На мобильном длинные экраны не центрируем по вертикали.
+             Они начинаются сверху и прокручиваются целиком. */
+          .screen-overlay.panel-scroll {
             display: block !important;
             overflow-y: auto !important;
             overflow-x: hidden !important;
             height: 100dvh !important;
             min-height: 100dvh !important;
             padding: 0 !important;
+            box-sizing: border-box;
             -webkit-overflow-scrolling: touch;
             overscroll-behavior-y: contain;
           }
 
-          .kazakhstan-scroll .kazakhstan-page {
+          /* Убираем прежний искусственный подъём карточки результатов. */
+          .result-card {
+            transform: none !important;
+          }
+
+          /* Казахстан — оставляем небольшие поля по бокам. */
+          .screen-overlay.panel-scroll .kazakhstan-page {
             box-sizing: border-box;
-            width: 100%;
+            width: auto !important;
+            max-width: none !important;
             min-height: 100%;
-            margin: 0 auto;
-            padding-top: max(28px, env(safe-area-inset-top));
-            padding-right: 18px;
-            padding-bottom: max(48px, env(safe-area-inset-bottom));
-            padding-left: 18px;
+            margin: 0 18px !important;
+            padding-top: max(28px, env(safe-area-inset-top)) !important;
+            padding-bottom: max(48px, env(safe-area-inset-bottom)) !important;
+          }
+
+          /* Результаты расчёта — карточка полностью видна и прокручивается. */
+          .screen-overlay.panel-scroll .results-card {
+            box-sizing: border-box;
+            width: auto !important;
+            max-width: none !important;
+            margin: 18px !important;
+            padding-top: 28px !important;
+            padding-bottom: max(40px, env(safe-area-inset-bottom)) !important;
+          }
+
+          /* Экран "Хочу остановиться" / помощь. */
+          .screen-overlay.panel-scroll .help-page {
+            box-sizing: border-box;
+            width: auto !important;
+            max-width: none !important;
+            min-height: 100%;
+            margin: 0 18px !important;
+            padding-top: max(28px, env(safe-area-inset-top)) !important;
+            padding-bottom: max(48px, env(safe-area-inset-bottom)) !important;
           }
         }
       `}</style>
