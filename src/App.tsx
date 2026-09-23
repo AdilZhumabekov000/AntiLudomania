@@ -974,6 +974,28 @@ function App() {
           .result-card {
             transform: translateY(-32px);
           }
+
+          /* Казахстан: на мобильном длинный блок должен начинаться сверху,
+             а не центрироваться по вертикали внутри overlay */
+          .kazakhstan-scroll {
+            display: block !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            height: 100dvh !important;
+            min-height: 100dvh !important;
+            padding: 0 !important;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+          }
+
+          .kazakhstan-scroll .kazakhstan-page {
+            box-sizing: border-box;
+            width: 100%;
+            min-height: 100%;
+            margin: 0 auto;
+            padding-top: max(28px, env(safe-area-inset-top));
+            padding-bottom: max(48px, env(safe-area-inset-bottom));
+          }
         }
       `}</style>
 
@@ -1180,7 +1202,7 @@ function App() {
       {/* KAZAKHSTAN */}
 
       {stage === 'kazakhstan' && (
-        <div className="screen-overlay panel-scroll">
+        <div className="screen-overlay panel-scroll kazakhstan-scroll">
 
           <div className="kazakhstan-page">
 
