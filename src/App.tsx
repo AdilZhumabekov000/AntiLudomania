@@ -915,28 +915,50 @@ function App() {
             </strong>
 
           </div>
-
           <h1>
-            Выбери стакан
-          </h1>
+  Выбери стакан
+</h1>
 
-          <p>
-            Три раунда.
-            <br />
-            Сделай свой выбор.
-            <br />
-            Сможешь дойти
-            до конца?
-          </p>
+<p>
+  Три раунда.
+  <br />
+  Сделай свой выбор.
+  <br />
+  Сможешь дойти
+  до конца?
+</p>
+
+<button
+  className="primary-button"
+  onClick={() =>
+    setStage('game')
+  }
+>
+  Начать
+</button>
+
+<button
+  className="text-button"
+  style={{ marginTop: '18px' }}
+  onClick={() => {
+    setGlobalFactIndex(0)
+    setStage('globalFacts')
+  }}
+>
+ 
+</button>
 
           <button
-            className="primary-button"
-            onClick={() =>
-              setStage('game')
-            }
+            className="secondary-button"
+            style={{ marginTop: '14px' }}
+            onClick={() => {
+              setGlobalFactIndex(0)
+              setStage('globalFacts')
+            }}
           >
-            Начать
+            Проблемы лудомании
           </button>
+
 
         </div>
 
@@ -1856,4 +1878,5 @@ function App() {
   )
 }
 
+export default App
 export default App
